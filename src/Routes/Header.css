@@ -1,0 +1,13 @@
+.app-header{
+    background-color: #e9f0fa;
+    position: fixed;
+    top: 0;
+    left: 20vw;
+    width: 80vw;
+    height: 10vh;
+    padding: 1vh;
+    display: flex;
+    border: thin solid black;
+    justify-content: flex-start;
+    align-items: center;
+}

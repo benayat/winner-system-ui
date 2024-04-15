@@ -1,0 +1,33 @@
+/* src/BetsInterface.css */
+.personal-bets-dashboard {
+    /*position: sticky;*/
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+.personal-bets-interface table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.personal-bets-interface th {
+    background-color: #007BFF;
+    color: white;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+.personal-bets-interface td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+.personal-bets-interface tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

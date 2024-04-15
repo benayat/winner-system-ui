@@ -1,0 +1,26 @@
+.login_icon-container{
+    padding: 5px 0 0 5px;
+    object-fit: cover;
+}
+.login_buttons-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    max-height: 5vh;
+}
+.modal_buttons{
+    padding: 0 5px 0 5px;
+    display: flex;
+    width: 70%;
+    margin-left: 1rem;
+    justify-content: space-between;
+}
+.login_avatar{
+    transition: transform 0.5s;
+}
+.login_avatar:hover{
+    transition: transform 0.5s;
+    transform: rotate3d(0,0,1,30deg) scale(1.1);
+}

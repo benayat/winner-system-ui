@@ -1,0 +1,14 @@
+.sidebar-container{
+    position: fixed;
+    border-right: 1px solid #2f0303;
+    left: 0;
+    top: 0;
+    width: 20vw;
+    height: 100vh;
+    background-color: #f0eaea;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-container .item_list{
+    padding-left: 1rem;
+}

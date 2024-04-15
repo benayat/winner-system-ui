@@ -1,0 +1,15 @@
+/* StartButton.css */
+.circle-button {
+    /* Transparent background on hover */
+    background-color: transparent;
+}
+
+.circle-button-icon {
+    /* Dark blue when active (pressed) */
+    color: #0000A0;
+}
+
+.circle-button-icon:not(:active) {
+    /* Light blue when not active (unpressed) */
+    color: #ADD8E6;
+}
