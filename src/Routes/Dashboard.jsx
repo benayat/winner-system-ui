@@ -41,7 +41,9 @@ const Dashboard = () => {
                 if (eventData["blockBets"] === true) {
                     console.log("blocking bets from dashboard line 28");
                     setBlockBets(true);
+                    console.log("current bet games: ", betGames);
                     getBetGamesAndChances().then((response) => {
+                        console.log("betGamesAndChances: response data: ", response.data);
                         setFilteredBetGames(betGames.filter((game) => response.data.map((game) => game["team1Name"]).includes(game["team1Name"])));
                     });
                 } else {

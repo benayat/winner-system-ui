@@ -30,7 +30,7 @@ const BetsInterface = ({allGames}) => {
             console.log("submitted");
             console.log("all games: ", allGames);
 
-            const betGames = allGames.filter((game, index) => bets[index] !== "no bet" && betAmounts[index] !== null).map((game, index) => {
+            const betGames = allGames.filter((game, index) => bets[index] !== "no bet" && betAmounts[index] !== 0).map((game, index) => {
                     return {
                         team1Name: game.team1Name,
                         team2Name: game.team2Name,
