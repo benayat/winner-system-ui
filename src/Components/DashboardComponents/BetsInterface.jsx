@@ -10,12 +10,13 @@ const BetsInterface = ({allGames}) => {
         console.log("all games: ", allGames);
 
         useEffect(() => {
-        getBalance().then((response) => {
-            setBalance(response.data["balance"]);
-        }).catch((error) => {
-            console.log(error);
-        });
-    }, []);
+            getBalance().then((response) => {
+                console.log("balance response: ", response);
+                setBalance(response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
+        }, []);
         const handleTeamChoiceChange = (event, index) => {
             // debugger;
             console.log(event.target.value);
@@ -39,12 +40,18 @@ const BetsInterface = ({allGames}) => {
                 }
             );
             console.log("submitting. bet games: ", betGames);
-            if (betGames.reduce((acc, game) => acc + game.amount, 0) > balance) {
-                alert("Not enough balance");
+            console.log("balance: ", balance);
+            const betsAmount = betGames.reduce((acc, game) => acc + Number(game.amount), 0);
+            if (betsAmount > balance) {
+                alert("bets amount: "+betsAmount + ", balance: "+balance+" Not enough balance");
                 return;
             }
             placeBets(betGames).then(() => {
                 console.log("bets placed successfully");
+                getBalance().then((response) => {
+                    setBalance(response.data);
+                });
+                alert("Bets placed successfully");
             })
                 .catch((error) => {
                     console.log(error);
@@ -54,43 +61,44 @@ const BetsInterface = ({allGames}) => {
 
         return (
             <div className={"personal-bets-interface"}>
-                {balance <= 0 ? <h2>balance is too low to bet</h2> :
-                    (<form onSubmit={handleSubmit}>
-                            {allGames.map((game, index) => (
-                                <FormControl>
-                                    <FormLabel
-                                        id="bet-game-group-label">{`${game["team1Name"]}:${game["team1Chances"]} VS ${game["team2Name"]}:${game["team2Chances"]}, tie:${game["tieChances"]}`}</FormLabel>
-                                    <RadioGroup
-                                        row
-                                        aria-labelledby="bet-game-group-label"
-                                        name="row-radio-buttons-group"
-                                        onChange={(event) => handleTeamChoiceChange(event, index)}
-                                        defaultValue="no bet"
-                                    >
-                                        <FormControlLabel value={"team1"} control={<Radio/>} label="team1"/>
-                                        <FormControlLabel value={"team2"} control={<Radio/>} label="team2"/>
-                                        <FormControlLabel value={game["tie"]} control={<Radio/>} label="tie"/>
-                                        <FormControlLabel value={"no bet"} control={<Radio/>} label="no bet"/>
-                                    </RadioGroup>
-                                    {bets[index] !== "no bet" && (
-                                        <TextField // New TextField for bet amount
-                                            required={false}
-                                            label="Bet Amount"
-                                            type="number"
-                                            placeholder={"Enter bet amount"}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            variant="outlined"
-                                            value={betAmounts[index] !== 0 ? betAmounts[index] : ""}
-                                            onChange={(event) => handleBetAmountChange(event, index)}
-                                        />
-                                    )}
-                                </FormControl>
-                            ))}
-                            <Button variant="contained" type="submit" color="primary">Submit</Button>
-                        </form>
-                    )}
+
+                {balance > 0 && <h2>balance: {balance}</h2>}
+                <form onSubmit={handleSubmit}>
+                    {allGames.map((game, index) => (
+                        <FormControl>
+                            <FormLabel
+                                id="bet-game-group-label">{`${game["team1Name"]}:${game["team1Chances"]} VS ${game["team2Name"]}:${game["team2Chances"]}, tie:${game["tieChances"]}`}</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="bet-game-group-label"
+                                name="row-radio-buttons-group"
+                                onChange={(event) => handleTeamChoiceChange(event, index)}
+                                defaultValue="no bet"
+                            >
+                                <FormControlLabel value={"team1"} control={<Radio/>} label="team1"/>
+                                <FormControlLabel value={"team2"} control={<Radio/>} label="team2"/>
+                                <FormControlLabel value={"tie"} control={<Radio/>} label="tie"/>
+                                <FormControlLabel value={"no bet"} control={<Radio/>} label="no bet"/>
+                            </RadioGroup>
+                            {bets[index] !== "no bet" && (
+                                <TextField // New TextField for bet amount
+                                    required={false}
+                                    label="Bet Amount"
+                                    type="number"
+                                    placeholder={"Enter bet amount"}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    variant="outlined"
+                                    value={betAmounts[index]}
+                                    onChange={(event) => handleBetAmountChange(event, index)}
+                                />
+                            )}
+                        </FormControl>
+                    ))}
+                    <Button variant="contained" type="submit" color="primary">Submit</Button>
+                </form>
+
             </div>
         );
     }

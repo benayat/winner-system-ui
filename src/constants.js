@@ -25,3 +25,4 @@ export const LANDING_PAGE_ADDRESS = "/";
 export const TIME_BEFORE_PERIOD = 60;
 export const GAME_RUNNING_TIME = 30;
 export const API_BASE_ADDRESS = "http://localhost:8080";
+export const MAX_USERNAME_LENGTH = 30;

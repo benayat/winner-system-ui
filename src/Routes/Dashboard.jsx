@@ -6,10 +6,11 @@ import {createSimpleSse, createSecureSse} from "../api/sseConfig";
 import LiveGamesComponent from "../Components/DashboardComponents/LiveGamesComponent";
 import BetsInterface from "../Components/DashboardComponents/BetsInterface";
 import {setTimerActive, setTimer} from "../redux/timerReducer";
-
+import {getBetGamesAndChances} from "../api/api";
 
 const Dashboard = () => {
-    let [blockBets, setBlockBets] = useState(true);
+    // let blockBets = useSelector((state) => state.season.blockBets);
+    const [blockBets, setBlockBets] = useState(true);
     const [secureSse, setSecureSse] = useState(null);
     const [simpleSse, setSimpleSse] = useState(null);
     let activeItem = useSelector((state) => state.dashboard.activeItem);
@@ -19,6 +20,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const [betGames, setBetGames] = useState("");
     const [tempResults, setTempResults] = useState([]);
+    const [filteredBetGames, setFilteredBetGames] = useState([]);
 
 
     useEffect(() => {
@@ -39,6 +41,9 @@ const Dashboard = () => {
                 if (eventData["blockBets"] === true) {
                     console.log("blocking bets from dashboard line 28");
                     setBlockBets(true);
+                    getBetGamesAndChances().then((response) => {
+                        setFilteredBetGames(betGames.filter((game) => response.data.map((game) => game["team1Name"]).includes(game["team1Name"])));
+                    });
                 } else {
                     console.log("unblocking bets from dashboard line 31");
                     console.log("event data: ", eventData["matchChancesForUpcomingPeriod"]);
@@ -50,6 +55,7 @@ const Dashboard = () => {
                         team2Name: matchChances["team2Name"],
                         team2Chances: matchChances["team2Chances"],
                         team2Goals: 0,
+                        tieChances: matchChances["tieChances"],
                         winner: "Not yet started"
                     })));
                 }
@@ -59,7 +65,7 @@ const Dashboard = () => {
             //     secureSseLocal.close();
             // }
         }
-    }, [secureSse, userName]);
+    }, [betGames, secureSse, userName]);
     useEffect(() => {
             let simpleSseLocal;
             if (simpleSse === null) {
@@ -70,8 +76,6 @@ const Dashboard = () => {
                 simpleSseLocal = simpleSse;
             }
             simpleSseLocal.onmessage = (e) => {
-                // debugger;
-                // console.log("message: {}", e.data);
                 const eventData = JSON.parse(e.data);
                 switch (eventData["event"]) {
                     case "MATCH_STARTED_EVENT":
@@ -92,7 +96,7 @@ const Dashboard = () => {
                         console.log("state tempResults: ", tempResults);
                         setTempResults(eventData["matchResults"]);
                         if (userName !== "Guest") {
-                            setBetGames(betGames.map((match, index) => {
+                            setFilteredBetGames(filteredBetGames.map((match, index) => {
                                 const currentMatch = eventData["matchResults"][index];
                                 return {
                                     ...match, team1Goals: currentMatch.team1Goals,
@@ -119,7 +123,7 @@ const Dashboard = () => {
             // }
         }
         ,
-        [betGames, dispatch, simpleSse, tempResults, userName]
+        [betGames, dispatch, filteredBetGames, simpleSse, tempResults, userName]
     )
 
 
@@ -136,7 +140,7 @@ const Dashboard = () => {
                                                                 matchesToDisplay={tempResults}/> : null;
             case "Selected live game results":
                 if (!betGames) return null;
-                return <LiveGamesComponent type={"selected games"} matchesToDisplay={betGames}/>;
+                return <LiveGamesComponent type={"selected games"} matchesToDisplay={filteredBetGames}/>;
             default:
                 return null;
         }

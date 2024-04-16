@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
     userName: 'Guest',
+    balance: 0,
 }
 export const userSlice = createSlice({
     name: 'user',

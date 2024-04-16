@@ -15,21 +15,17 @@ const Sidebar = () => {
     const onSidebarItemClick = (title) => {
         dispatch(setActiveItem(title));
     }
-    return (
-        <div className={"sidebar-container"}>
+    return (<div className={"sidebar-container"}>
             <LoginArea/>
-            {seasonActive === true && (
-                <>
+            {seasonActive === true && (<>
                     <h1>Choose Dashboard</h1>
                     <ul className={"item_list"}>
-                        {sidebarItems.filter(item => userName !== "Guest" ? (item.permission === USER_PERMISSION || item.permission === GUEST_PERMISSION) : item.permission === GUEST_PERMISSION).map(item =>
+                        {sidebarItems.filter(item => userName === "Guest" ? item.permission === GUEST_PERMISSION : true).map(item =>
                             <SidebarItem key={item.title} title={item.title} icon={item.icon}
                                          onClick={() => onSidebarItemClick(item.title)}
                                          active={activeItem !== item.title}/>)}
                     </ul>
-                </>
-            )}
-        </div>
-    );
+                </>)}
+        </div>);
 }
 export default Sidebar;

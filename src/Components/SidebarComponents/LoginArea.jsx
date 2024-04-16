@@ -5,11 +5,11 @@ import loginIcon from "../../icons/login_icon.jpg";
 import LoginFormModal from "./LoginFormModal";
 import RegisterFormModal from "./RegisterFormModal";
 import UserActionsGroup from "./UserActionsGroup";
-import {userActions} from "../../constants";
+import {MAX_USERNAME_LENGTH, userActions} from "../../constants";
 import LogoutConfirmationModal from "./LogoutConfirmationModal";
 import {useDispatch, useSelector} from "react-redux";
 import {setUserName} from "../../redux/userReducer";
-import {login, registerUser} from '../../api/api.js';
+import {getLoggedInUser, login, logout, registerUser} from '../../api/api.js';
 // import {useIsLoggedInQuery} from "../../redux/api";
 
 const LoginArea = () => {
@@ -18,17 +18,17 @@ const LoginArea = () => {
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
     const userName = useSelector((state) => state.user.userName);
-    // const {data} = useIsLoggedInQuery(userName, {
-    //     pollingInterval: 3000,
-    //     skipPollingIfUnfocused: false,
-    //     // skip: userName === "Guest"
-    // });
-    // console.log("logged in data: ", data);
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //
-    // }, []);
+    useEffect(() => {
+        getLoggedInUser().then((response) => {
+            if (response.data.length <= MAX_USERNAME_LENGTH) {
+                dispatch(setUserName(response.data));
+                removeModals();
+                setShowButtons(false);
+            }
+        })
+    }, []);
     useEffect(() => {
         if (!showButtons) {
             removeModals();
@@ -68,12 +68,9 @@ const LoginArea = () => {
     };
 
     const handleLogin = async (email, password) => {
-        // if(userName === "Guest") {
-        //
-        // }
-        login({email, password})
-            .then(() => {
-                // console.log(email);
+        login({email, password, rememberMe: true})
+            .then((response) => {
+                console.log(response);
                 dispatch(setUserName(email));
                 removeModals();
                 setShowButtons(false);
@@ -92,8 +89,10 @@ const LoginArea = () => {
             });
     }
     const handleLogout = async () => {
-        dispatch(setUserName("Guest"));
-        removeModals();
+        logout().then(() => {
+            dispatch(setUserName("Guest"));
+            removeModals();
+        });
     }
 
     const getRelevantModal = () => {
@@ -117,9 +116,9 @@ const LoginArea = () => {
                 {showButtons ? (
                         <UserActionsGroup>
                             {userName !== "Guest" ? userActions.user.map(action => <Button key={action}
-                                                                                    title={action}
-                                                                                    variant="contained"
-                                                                                    onClick={() => showOnlyModal(action)}>{action}</Button>) :
+                                                                                           title={action}
+                                                                                           variant="contained"
+                                                                                           onClick={() => showOnlyModal(action)}>{action}</Button>) :
                                 userActions.guest.map(action => <Button key={action} title={action} variant="contained"
                                                                         onClick={() => showOnlyModal(action)}>{action}</Button>)
                             }
