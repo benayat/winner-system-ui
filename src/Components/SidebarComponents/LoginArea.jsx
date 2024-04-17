@@ -63,9 +63,15 @@ const LoginArea = () => {
         }
     }
 
-    const handleCloseModal = () => {
+    const handleCloseLoginModal = () => {
         setShowLoginModal(false);
     };
+    const handleCloseSignUpModal = () => {
+        setShowSignUpModal(false);
+    }
+    const handleCloseLogoutModal = () => {
+        setShowLogoutModal(false);
+    }
 
     const handleLogin = async (email, password) => {
         login({email, password, rememberMe: true})
@@ -98,11 +104,11 @@ const LoginArea = () => {
     const getRelevantModal = () => {
         if (!showButtons) return null;
         if (showLoginModal) {
-            return <LoginFormModal show={showLoginModal} closeModal={handleCloseModal} handleLogin={handleLogin}/>
+            return <LoginFormModal show={showLoginModal} closeModal={handleCloseLoginModal} handleLogin={handleLogin}/>
         } else if (showSignUpModal) {
-            return <RegisterFormModal show={showSignUpModal} closeModal={handleCloseModal} handleSignUp={handleSignUp}/>
+            return <RegisterFormModal show={showSignUpModal} closeModal={handleCloseSignUpModal} handleSignUp={handleSignUp}/>
         } else if (showLogoutModal) {
-            return <LogoutConfirmationModal show={showLogoutModal} closeModal={handleCloseModal}
+            return <LogoutConfirmationModal show={showLogoutModal} closeModal={handleCloseLogoutModal}
                                             handleConfirm={handleLogout}/>
         }
     }
