@@ -19,8 +19,8 @@ const BetsInterface = ({allGames}) => {
         }, []);
         const handleTeamChoiceChange = (event, index) => {
             // debugger;
-            console.log(event.target.value);
-            setBets(bets.map((bet, i) => i === index ? event.target.value : bet));
+            console.log("index is: " + index + " value: " + event.target.value);
+            setBets(currentBets => currentBets.map((bet, i) => i === index ? event.target.value : bet));
         }
         const handleBetAmountChange = (event, index) => {
             setBetAmounts(betAmounts.map((betAmount, i) => i === index ? event.target.value : betAmount));
@@ -29,21 +29,23 @@ const BetsInterface = ({allGames}) => {
             event.preventDefault();
             console.log("submitted");
             console.log("all games: ", allGames);
-
-            const betGames = allGames.filter((game, index) => bets[index] !== "no bet" && betAmounts[index] !== 0).map((game, index) => {
-                    return {
-                        team1Name: game.team1Name,
-                        team2Name: game.team2Name,
-                        expectedWinner: bets[index].toUpperCase(),
-                        amount: betAmounts[index],
-                    };
-                }
-            );
+            console.log("bets: ", bets);
+            console.log("bet amounts: ", betAmounts);
+            const betGames =
+                allGames.map((game, index) => {
+                        return {
+                            team1Name: game.team1Name,
+                            team2Name: game.team2Name,
+                            expectedWinner: bets[index].toUpperCase(),
+                            amount: betAmounts[index],
+                        };
+                    }
+                ).filter((game, index) => bets[index] !== "no bet" && betAmounts[index] > 0)
             console.log("submitting. bet games: ", betGames);
             console.log("balance: ", balance);
             const betsAmount = betGames.reduce((acc, game) => acc + Number(game.amount), 0);
             if (betsAmount > balance) {
-                alert("bets amount: "+betsAmount + ", balance: "+balance+" Not enough balance");
+                alert("bets amount: " + betsAmount + ", balance: " + balance + " Not enough balance");
                 return;
             }
             placeBets(betGames).then(() => {
