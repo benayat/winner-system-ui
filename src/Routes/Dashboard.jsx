@@ -24,31 +24,22 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        console.log("use effect in dashboard line 28, userName: ", userName);
         if (userName !== "Guest") {
-            console.log("userName is not Guest, creating secure sse");
             let secureSseLocal;
             if (secureSse === null) {
                 secureSseLocal = createSecureSse();
-                console.log("created secure sse");
                 setSecureSse(secureSseLocal);
             } else {
                 secureSseLocal = secureSse;
             }
             secureSseLocal.onmessage = (e) => {
                 const eventData = JSON.parse(e.data);
-                console.log("secure event data: ", eventData);
                 if (eventData["blockBets"] === true) {
-                    console.log("blocking bets from dashboard line 28");
                     setBlockBets(true);
-                    console.log("current bet games: ", betGames);
                     getBetGamesAndChances().then((response) => {
-                        console.log("betGamesAndChances: response data: ", response.data);
                         setFilteredBetGames(betGames.filter((game) => response.data.map((game) => game["team1Name"]).includes(game["team1Name"])));
                     });
                 } else {
-                    console.log("unblocking bets from dashboard line 31");
-                    console.log("event data: ", eventData["matchChancesForUpcomingPeriod"]);
                     setBlockBets(false);
                     setBetGames(eventData["matchChancesForUpcomingPeriod"].map(matchChances => ({
                         team1Name: matchChances["team1Name"],
@@ -72,7 +63,6 @@ const Dashboard = () => {
             let simpleSseLocal;
             if (simpleSse === null) {
                 simpleSseLocal = createSimpleSse();
-                console.log("created simple sse");
                 setSimpleSse(simpleSseLocal);
             } else {
                 simpleSseLocal = simpleSse;
@@ -81,8 +71,6 @@ const Dashboard = () => {
                 const eventData = JSON.parse(e.data);
                 switch (eventData["event"]) {
                     case "MATCH_STARTED_EVENT":
-                        // debugger;
-                        console.log("all matches: {}", eventData["allMatches"]);
                         setTempResults(eventData["allMatches"].map(match => ({
                             team1Name: match["team1"],
                             team1Goals: 0,
@@ -94,8 +82,6 @@ const Dashboard = () => {
                     case "MATCH_ENDED_EVENT":
                         break;
                     case "GOAL_CYCLE_EVENT":
-                        console.log("goal cycle event. temp results:", eventData["matchResults"]);
-                        console.log("state tempResults: ", tempResults);
                         setTempResults(eventData["matchResults"]);
                         if (userName !== "Guest") {
                             setFilteredBetGames(filteredBetGames.map((match, index) => {
@@ -134,8 +120,6 @@ const Dashboard = () => {
             case "Teams table":
                 return <TeamsTable/>;
             case "Bets interface":
-                console.log("active item is bets interface. bet games: ", betGames);
-                console.log("block bets value: ", blockBets);
                 return (blockBets === true || betGames === "") ? null : <BetsInterface allGames={betGames}/>;
             case "Live games results":
                 return tempResults !== [] ? <LiveGamesComponent type={"all games"}

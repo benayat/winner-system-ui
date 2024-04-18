@@ -12,10 +12,7 @@ const Header = () => {
 
 
     const onStartButtonClick = (e) => {
-        // setDisabled(true);
         startSeason().then(() => {
-            // api.util.invalidateTags(['Season']);
-            console.log("Season started");
             dispatch(setSeasonActive(true));
         }).catch((e) => console.log(e));
     }

@@ -7,19 +7,15 @@ const BetsInterface = ({allGames}) => {
         let [bets, setBets] = useState(Array(allGames.length).fill("no bet"));
         let [betAmounts, setBetAmounts] = useState(Array(allGames.length).fill(0));
         let [balance, setBalance] = useState(-1);
-        console.log("all games: ", allGames);
 
         useEffect(() => {
             getBalance().then((response) => {
-                console.log("balance response: ", response);
                 setBalance(response.data);
             }).catch((error) => {
                 console.log(error);
             });
         }, []);
         const handleTeamChoiceChange = (event, index) => {
-            // debugger;
-            console.log("index is: " + index + " value: " + event.target.value);
             setBets(currentBets => currentBets.map((bet, i) => i === index ? event.target.value : bet));
         }
         const handleBetAmountChange = (event, index) => {
@@ -27,10 +23,6 @@ const BetsInterface = ({allGames}) => {
         }
         const handleSubmit = (event) => {
             event.preventDefault();
-            console.log("submitted");
-            console.log("all games: ", allGames);
-            console.log("bets: ", bets);
-            console.log("bet amounts: ", betAmounts);
             const betGames =
                 allGames.map((game, index) => {
                         return {
@@ -41,15 +33,12 @@ const BetsInterface = ({allGames}) => {
                         };
                     }
                 ).filter((game, index) => bets[index] !== "no bet" && betAmounts[index] > 0)
-            console.log("submitting. bet games: ", betGames);
-            console.log("balance: ", balance);
             const betsAmount = betGames.reduce((acc, game) => acc + Number(game.amount), 0);
             if (betsAmount > balance) {
                 alert("bets amount: " + betsAmount + ", balance: " + balance + " Not enough balance");
                 return;
             }
             placeBets(betGames).then(() => {
-                console.log("bets placed successfully");
                 getBalance().then((response) => {
                     setBalance(response.data);
                 });

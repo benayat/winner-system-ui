@@ -7,7 +7,6 @@ const TeamsTable = () => {
 
     useEffect(() => {
         getTeams().then((response) => {
-            console.log(response.data);
             setTeams(response.data)
         });
     }, []);

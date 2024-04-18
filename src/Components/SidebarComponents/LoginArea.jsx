@@ -5,17 +5,29 @@ import loginIcon from "../../icons/login_icon.jpg";
 import LoginFormModal from "./LoginFormModal";
 import RegisterFormModal from "./RegisterFormModal";
 import UserActionsGroup from "./UserActionsGroup";
-import {MAX_USERNAME_LENGTH, userActions} from "../../constants";
+import {MAX_USERNAME_LENGTH, userActions, USERNAME_DOES_NOT_EXIST} from "../../constants";
 import LogoutConfirmationModal from "./LogoutConfirmationModal";
 import {useDispatch, useSelector} from "react-redux";
 import {setUserName} from "../../redux/userReducer";
-import {getLoggedInUser, login, logout, registerUser} from '../../api/api.js';
+import {
+    getLoggedInUser,
+    login,
+    logout,
+    registerUser,
+    updateEmail,
+    updatePassword,
+    updateUsername
+} from '../../api/api.js';
+import UpdateProfileFormModal from "./UpdateProfileFormModal";
 // import {useIsLoggedInQuery} from "../../redux/api";
 
 const LoginArea = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [showUpdateEmailModal, setShowUpdateEmailModal] = useState(false);
+    const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+    const [showUpdateUsernameModal, setShowUpdateUsernameModal] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
     const userName = useSelector((state) => state.user.userName);
     const dispatch = useDispatch();
@@ -39,6 +51,9 @@ const LoginArea = () => {
         setShowLoginModal(false);
         setShowSignUpModal(false);
         setShowLogoutModal(false)
+        setShowUpdateUsernameModal(false);
+        setShowUpdateEmailModal(false);
+        setShowUpdatePasswordModal(false);
     }
 
     const toggleShowButtons = () => {
@@ -58,6 +73,15 @@ const LoginArea = () => {
             case "logout":
                 setShowLogoutModal(true);
                 break;
+            case "update email":
+                setShowUpdateEmailModal(true);
+                break;
+            case "update password":
+                setShowUpdatePasswordModal(true);
+                break;
+            case "update user name":
+                setShowUpdateUsernameModal(true);
+                break;
             default:
                 break;
         }
@@ -76,13 +100,16 @@ const LoginArea = () => {
     const handleLogin = async (email, password) => {
         login({email, password, rememberMe: true})
             .then((response) => {
-                console.log(response);
-                dispatch(setUserName(email));
-                removeModals();
-                setShowButtons(false);
+                if (response.data.length <= MAX_USERNAME_LENGTH) {
+                    dispatch(setUserName(email));
+                    removeModals();
+                    setShowButtons(false);
+                } else {
+                    throw new Error(USERNAME_DOES_NOT_EXIST);
+                }
             })
-            .catch(() => {
-                alert('Login failed');
+            .catch((e) => {
+                alert(`Login failed + ${e.message}`);
             });
     };
     const handleSignUp = async (userName, email, password, confirmPassword) => {
@@ -100,16 +127,38 @@ const LoginArea = () => {
             removeModals();
         });
     }
+    const handleUpdateEmail = async (email, newEmail) => {
+        updateEmail(email, newEmail).then(dispatch(setUserName(email)));
+        removeModals();
+        setShowButtons(false);
+    }
+    const handleUpdatePassword = async (email, newPassword) => {
+        updatePassword(email, newPassword).then(() => alert('Password updated successfully'));
+        removeModals();
+        setShowButtons(false);
+    }
+    const handleUpdateUsername = async (email, newUsername) => {
+        updateUsername(email, newUsername).then(() => alert('Username updated successfully'));
+        removeModals();
+        setShowButtons(false);
+    }
 
     const getRelevantModal = () => {
         if (!showButtons) return null;
         if (showLoginModal) {
             return <LoginFormModal show={showLoginModal} closeModal={handleCloseLoginModal} handleLogin={handleLogin}/>
         } else if (showSignUpModal) {
-            return <RegisterFormModal show={showSignUpModal} closeModal={handleCloseSignUpModal} handleSignUp={handleSignUp}/>
+            return <RegisterFormModal show={showSignUpModal} closeModal={handleCloseSignUpModal}
+                                      handleSignUp={handleSignUp}/>
         } else if (showLogoutModal) {
             return <LogoutConfirmationModal show={showLogoutModal} closeModal={handleCloseLogoutModal}
                                             handleConfirm={handleLogout}/>
+        } else if (showUpdateEmailModal) {
+            return <UpdateProfileFormModal email={userName} fieldName={'email'} updateFunc={handleUpdateEmail}/>
+        } else if (showUpdatePasswordModal) {
+            return <UpdateProfileFormModal email={userName} fieldName={'password'} updateFunc={handleUpdatePassword}/>
+        } else if (showUpdateUsernameModal) {
+            return <UpdateProfileFormModal email={userName} fieldName={'username'} updateFunc={handleUpdateUsername}/>
         }
     }
     return (

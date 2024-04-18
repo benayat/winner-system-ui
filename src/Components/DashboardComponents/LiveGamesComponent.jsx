@@ -3,7 +3,6 @@ import './LiveGamesComponent.css';
 import {allGamesDataArray, allGamesHeadsArray, selectedGamesDataArray, selectedGamesHeadsArray} from "../../constants";
 
 const LiveGamesComponent = ({type, matchesToDisplay}) => {
-    console.log("matches to display in live games: ", matchesToDisplay)
     const getTableHeadsArray = () => {
         if (type === "selected games") {
             return selectedGamesHeadsArray;

@@ -2,14 +2,20 @@ import {instance as axios} from './axiosDefinition';
 export const registerUser = async (userDetails) => {
     return axios.post('/api/user/signup', userDetails);
 }
-export const updateEmail = async (email) => {
-    return axios.post('/api/user/update-email', email);
+export const updateEmail = async (email, newEmail) => {
+    return axios.put(`/api/user/update-email?email=${email}&new-email=${newEmail}`);
 }
-export const updateUsername = async (username) => {
-    return axios.post('/api/user/update-username', username);
+export const updateUsername = async (email, newUsername) => {
+    return axios.put(`/api/user/update-username?email=${email}&new-username=${newUsername}`);
+}
+export const updatePassword = async (email, newPassword) => {
+    return axios.put(`/api/user/update-password?email=${email}&new-password=${newPassword}`);
 }
 export const deleteUser = async (userEmail) => {
     return axios.post('/api/user/delete', userEmail);
+}
+export const getLoggedInUser = async () => {
+    return axios.get('/api/user/');
 }
 export const login = async ({email, password, rememberMe}) => {
     const form = new FormData();
@@ -37,7 +43,4 @@ export const getBetGamesAndChances = async () => {
 }
 export const getBalance = async () => {
     return axios.get('/api/user/balance');
-}
-export const getLoggedInUser = async () => {
-    return axios.get('/api/user/');
 }
