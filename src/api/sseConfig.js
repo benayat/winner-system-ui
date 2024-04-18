@@ -1,6 +1,3 @@
-// import {SSE} from "sse.js";
-
-
 import {API_BASE_ADDRESS} from "../constants";
 
 export const createSimpleSse = () => {
