@@ -9,13 +9,12 @@ import {setTimerActive, setTimer} from "../redux/timerReducer";
 import {getBetGamesAndChances} from "../api/api";
 
 const Dashboard = () => {
-    // let blockBets = useSelector((state) => state.season.blockBets);
     const [blockBets, setBlockBets] = useState(true);
     const [secureSse, setSecureSse] = useState(null);
     const [simpleSse, setSimpleSse] = useState(null);
-    let activeItem = useSelector((state) => state.dashboard.activeItem);
-    let userName = useSelector((state) => state.user.userName);
-    let seasonActive = useSelector((state) => state.season.seasonActive);
+    const activeItem = useSelector((state) => state.dashboard.activeItem);
+    const userName = useSelector((state) => state.user.userName);
+    const seasonActive = useSelector((state) => state.season.seasonActive);
 
     const dispatch = useDispatch();
     const [betGames, setBetGames] = useState("");
@@ -89,6 +88,7 @@ const Dashboard = () => {
                                 return {
                                     ...match, team1Goals: currentMatch.team1Goals,
                                     team2Goals: currentMatch.team2Goals,
+                                    winner: currentMatch.winner
                                 };
                             }));
                         }
@@ -131,7 +131,6 @@ const Dashboard = () => {
                 return null;
         }
     }
-
     return seasonActive === true && (
         <div className={'dashboard-container'}>
             {renderComponent()}

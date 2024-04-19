@@ -23,12 +23,12 @@
 .teams-table th {
     background-color: #007BFF;
     color: white;
-    padding: 10px;
+    padding: 0.625rem;
     border: 1px solid #ddd;
 }
 
 .teams-table td {
-    padding: 10px;
+    padding: 0.625rem;
     border: 1px solid #ddd;
 }
 

@@ -11,7 +11,7 @@ export const createSimpleSse = () => {
         console.log("error with simple-sse, trying to reconnect", e);
         setTimeout(() => {
             simpleSse.close();
-            createSimpleSse();
+            return createSimpleSse();
         }, 1000);
     }
     return simpleSse;
@@ -27,11 +27,10 @@ export const createSecureSse = () => {
         console.log("error with secure-sse", e);
         setTimeout(() => {
             secureSse.close();
-            createSecureSse();
+            return createSecureSse();
         }, 1000);
     }
     return secureSse;
-
 }
 
 

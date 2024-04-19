@@ -8,13 +8,7 @@
     max-height: 5vh;
     width: 100%;
 }
-.sidebar-item .active {
-    background-color: #efdddd;
-    color: black;
-    transition: background-color 0.3s, transform 0.3s;
-    transform: scale(1.08);
-}
-.sidebar-item:hover {
+.sidebar-item:hover, .sidebar-item.active {
     background-color: #efdddd;
     color: brown;
     transition: background-color 0.3s, transform 0.3s;

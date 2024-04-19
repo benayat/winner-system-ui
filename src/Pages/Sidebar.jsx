@@ -1,10 +1,9 @@
 import './Sidebar.css';
 import SidebarItem from "../Components/SidebarComponents/SidebarItem";
-import {GUEST_PERMISSION, sidebarItems, USER_PERMISSION} from "../constants";
+import {GUEST_PERMISSION, sidebarItems} from "../constants";
 import LoginArea from "../Components/SidebarComponents/LoginArea";
 import {useSelector, useDispatch} from "react-redux";
 import {setActiveItem} from "../redux/dashboardRecucer";
-// import {useIsSeasonOnQuery} from "../redux/api";
 
 const Sidebar = () => {
     const userName = useSelector((state) => state.user.userName);
@@ -23,7 +22,7 @@ const Sidebar = () => {
                         {sidebarItems.filter(item => userName === "Guest" ? item.permission === GUEST_PERMISSION : true).map(item =>
                             <SidebarItem key={item.title} title={item.title} icon={item.icon}
                                          onClick={() => onSidebarItemClick(item.title)}
-                                         active={activeItem !== item.title}/>)}
+                                         active={activeItem === item.title}/>)}
                     </ul>
                 </>)}
         </div>);

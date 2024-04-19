@@ -1,34 +1,33 @@
 /* LoginFormModal.css */
-
-form {
+.login-form-modal form {
     display: flex;
     flex-direction: column;
     width: 300px;
     margin: 0 auto;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+    padding: 1.25rem;
+    border-radius: 0.3rem;
+    box-shadow: 0 0 0.625rem 0 rgba(0, 0, 0, 0.1);
     background-color: #fff;
 }
 
-input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
+.login-form-modal input {
+    margin-bottom: 0.625rem;
+    padding: 0.625rem;
+    border-radius: 0.3rem;
     border: 1px solid #ddd;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
-button {
-    padding: 10px;
-    border-radius: 5px;
+.login-form-modal button {
+    padding: 0.625rem;
+    border-radius: 0.3rem;
     border: none;
     background-color: #007BFF;
     color: #fff;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
-button:hover {
+.login-form-modal button:hover {
     background-color: #0056b3;
 }

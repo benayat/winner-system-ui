@@ -5,8 +5,8 @@ import {startSeason} from "../api/api";
 import {setSeasonActive} from "../redux/seasonReducer";
 
 const Header = () => {
-    let timerActive = useSelector((state) => state.timer.isTimerActive);
-    let timer = useSelector((state) => state.timer.timer);
+    const timerActive = useSelector((state) => state.timer.isTimerActive);
+    const timer = useSelector((state) => state.timer.timer);
     const seasonActive = useSelector((state) => state.season.seasonActive);
     const dispatch = useDispatch();
 

@@ -4,10 +4,9 @@ import {Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Tex
 import {getBalance, placeBets} from "../../api/api";
 
 const BetsInterface = ({allGames}) => {
-        let [bets, setBets] = useState(Array(allGames.length).fill("no bet"));
-        let [betAmounts, setBetAmounts] = useState(Array(allGames.length).fill(0));
-        let [balance, setBalance] = useState(-1);
-
+        const [bets, setBets] = useState(Array(allGames.length).fill("no bet"));
+        const [betAmounts, setBetAmounts] = useState(Array(allGames.length).fill(0));
+        const [balance, setBalance] = useState(-1);
         useEffect(() => {
             getBalance().then((response) => {
                 setBalance(response.data);
@@ -52,13 +51,12 @@ const BetsInterface = ({allGames}) => {
 
         return (
             <div className={"personal-bets-interface"}>
-
                 {balance > 0 && <h2>balance: {balance}</h2>}
                 <form onSubmit={handleSubmit}>
                     {allGames.map((game, index) => (
-                        <FormControl>
+                        <FormControl margin={"normal"}>
                             <FormLabel
-                                id="bet-game-group-label">{`${game["team1Name"]}:${game["team1Chances"]} VS ${game["team2Name"]}:${game["team2Chances"]}, tie:${game["tieChances"]}`}</FormLabel>
+                                id="bet-game-group-label">{`${game["team1Name"]}:${game["team1Chances"]}% VS ${game["team2Name"]}:${game["team2Chances"]}%, tie:${game["tieChances"]}%`}</FormLabel>
                             <RadioGroup
                                 row
                                 aria-labelledby="bet-game-group-label"

@@ -1,8 +1,8 @@
 import './App.css';
-// import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Sidebar from "./Routes/Sidebar";
-import Dashboard from "./Routes/Dashboard";
-import Header from "./Routes/Header";
+// import {BrowserRouter, Route, Pages} from "react-router-dom";
+import Sidebar from "./Pages/Sidebar";
+import Dashboard from "./Pages/Dashboard";
+import Header from "./Pages/Header";
 
 
 const App = () => {
@@ -10,9 +10,9 @@ const App = () => {
     return (
         <div className="App">
             {/*<BrowserRouter>*/}
-            {/*    <Routes>*/}
+            {/*    <Pages>*/}
             {/*        <Route path={"/"} element={<><Sidebar/><Header/><Dashboard/></>}/>*/}
-            {/*    </Routes>*/}
+            {/*    </Pages>*/}
             {/*</BrowserRouter>*/}
             <Sidebar/>
             <Header/>

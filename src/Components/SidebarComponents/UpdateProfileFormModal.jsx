@@ -8,7 +8,7 @@ const UpdateProfileFormModal = ({email, fieldName, updateFunc}) => {
     const [error, setError] = useState('');
     const handleUpdateProfile = (e) => {
         e.preventDefault()
-        if(fieldValue !== confirmFieldValue) {
+        if (fieldValue !== confirmFieldValue) {
             setError('Fields do not match');
             return;
         }
@@ -39,24 +39,26 @@ const UpdateProfileFormModal = ({email, fieldName, updateFunc}) => {
     }
 
     return (
-        <form className={"update-profile-form"}>
-            <input
-                type={"text"}
-                placeholder={fieldName}
-                value={fieldValue}
-                onChange={(e)=> setFieldValue(e.target.value)}
-            />
-            <input
-            type={"text"}
-            placeholder={`Confirm ${fieldName}`}
-            value={confirmFieldValue}
-            onChange={(e) => setConfirmFieldValue(e.target.value)}
-            />
-            {error !== '' && <span className='err'>{error}</span>}
-            <button type="submit" disabled={error !== ''} onClick={handleUpdateProfile}>
-                Update
-            </button>
-        </form>
+        <div>
+            <form className={"update-profile-form"}>
+                <input
+                    type={"text"}
+                    placeholder={fieldName}
+                    value={fieldValue}
+                    onChange={(e) => setFieldValue(e.target.value)}
+                />
+                <input
+                    type={"text"}
+                    placeholder={`Confirm ${fieldName}`}
+                    value={confirmFieldValue}
+                    onChange={(e) => setConfirmFieldValue(e.target.value)}
+                />
+                {error !== '' && <span className='err'>{error}</span>}
+                <button type="submit" disabled={error !== ''} onClick={handleUpdateProfile}>
+                    Update
+                </button>
+            </form>
+        </div>
     );
 }
 export default UpdateProfileFormModal;

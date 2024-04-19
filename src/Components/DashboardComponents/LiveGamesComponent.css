@@ -4,14 +4,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 1.25rem;
     font-family: Arial, sans-serif;
 }
 
 .period-games-dashboard h1 {
     color: #333;
     font-size: 2.5em;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 }
 
 .period-games-dashboard table {
@@ -28,7 +28,7 @@
 }
 
 .period-games-dashboard td {
-    padding: 10px;
+    padding: 0.625rem;
     border: 1px solid #ddd;
 }
 
